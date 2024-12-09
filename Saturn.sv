@@ -49,6 +49,8 @@ module emu
 	output        VGA_SCALER, // Force VGA scaler
 	output        VGA_DISABLE, // analog out is off 
 
+	output        resSwitchBlackout,
+
 	input  [11:0] HDMI_WIDTH,
 	input  [11:0] HDMI_HEIGHT,
 	output        HDMI_FREEZE,
@@ -257,6 +259,7 @@ module emu
 		"P1-;",
 		"P1OA,Aspect Ratio,4:3,Stretched;",
 		"P1OB,320x224 Aspect,Original,Corrected;",
+		"P1O[61],Black Transitions,On,Off;",
 		"P1OT,Deinterlacing, Weave, Bob;",
 //		"P1O13,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 //		"P1-;",
@@ -366,6 +369,8 @@ module emu
 	
 	wire [21:0] gamma_bus;
 	wire [15:0] sdram_sz;
+
+	assign resSwitchBlackout = ~status[61];
 	
 	hps_io #(.CONF_STR(CONF_STR), .WIDE(1)) hps_io
 	(
